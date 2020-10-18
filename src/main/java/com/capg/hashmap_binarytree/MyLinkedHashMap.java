@@ -5,14 +5,14 @@ import java.util.ArrayList;
 public class MyLinkedHashMap<K,V> {
 	private final int numBuckets;
 	ArrayList<MyLinkedList<K>> myBucketArray;
-
+	
 	public MyLinkedHashMap() {
 		this.numBuckets=10;
 		this.myBucketArray=new ArrayList<>(numBuckets);
 		for(int i=0;i<numBuckets;i++)
 			myBucketArray.add(null);
 	}
-
+	
 	public int getBucketIndex(K key) {
 		int hashCode = Math.abs(key.hashCode());
 		int index = hashCode % numBuckets;
@@ -27,8 +27,8 @@ public class MyLinkedHashMap<K,V> {
 		if(myMapNode!=null)
 			return myMapNode.getValue();
 		else return null;
-
-
+		
+		
 	}
 	public void add(K key,V value) {
 		int index=this.getBucketIndex(key);
@@ -38,7 +38,7 @@ public class MyLinkedHashMap<K,V> {
 			MyMapNode myMapNode=new MyMapNode(key,value);
 			myLinkedList.addAtEnd(myMapNode);
 			this.myBucketArray.set(index, myLinkedList);
-
+		
 		}
 		else {
 			MyMapNode myMapNode=(MyMapNode) myLinkedList.search(key);
@@ -49,7 +49,19 @@ public class MyLinkedHashMap<K,V> {
 			else {
 				myMapNode.setValue(value);
 			}
-
+			
 		}
 	}
+	
+	public K remove(K key) {
+		int index=this.getBucketIndex(key);
+		MyLinkedList<K> myLinkedList=this.myBucketArray.get(index);
+		if(myLinkedList==null)
+			return null;
+		else {
+			MyMapNode deletedNode=(MyMapNode)myLinkedList.deleteAnode(key);
+			return (K)deletedNode.getKey();
+		}
+	}
+	
 }
